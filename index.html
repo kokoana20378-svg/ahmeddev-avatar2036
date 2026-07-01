@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no,maximum-scale=1">
+<title>AHMEDDEV AVATAR 2036</title>
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AVATAR2036">
+<meta name="description" content="AHMEDDEV AVATAR 2036 - Your Private AI Companion">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300D4FF'/%3E%3Cstop offset='100%25' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='48' fill='%23020208'/%3E%3Cpath d='M96 44L56 84l40 40 40-40z' fill='url(%23g)' opacity='0.9'/%3E%3Cpath d='M96 68L68 96l28 28 28-28z' fill='url(%23g)' opacity='0.5'/%3E%3C/svg%3E">
+<style>
+:root{--blue:#00D4FF;--purple:#8B5CF6;--pink:#C084FC;--bg:#000000;--card:rgba(255,255,255,0.05);--border:rgba(255,255,255,0.08);--text:#FFFFFF;--muted:#8B8BA3;--green:#34D399;--red:#F87171}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+html,body{height:100%;background:#000;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','SF Pro Text','Inter',system-ui,sans-serif;overscroll-behavior:none;overflow:hidden}
+body{display:flex;justify-content:center;align-items:center}
+.app{width:100%;max-width:430px;height:100dvh;height:100vh;background:var(--bg);position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg)}
+.screen.active{display:flex}
+.screen.animating{display:flex}
+
+/* ========== SPLASH SCREEN ========== */
+#splash{justify-content:center;align-items:center;background:#000}
+.splash-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(99,50,200,0.25),transparent),radial-gradient(ellipse 60% 40% at 50% 70%,rgba(0,180,255,0.1),transparent)}
+.splash-ring{position:absolute;top:15%;left:50%;transform:translateX(-50%);width:280px;height:280px;border-radius:50%;border:2px solid rgba(0,180,255,0.15);box-shadow:0 0 40px rgba(0,180,255,0.1),0 0 80px rgba(139,92,246,0.08),inset 0 0 40px rgba(0,180,255,0.05);animation:ringPulse 4s ease-in-out infinite}
+@keyframes ringPulse{0%,100%{opacity:0.6;transform:translateX(-50%) scale(1)}50%{opacity:1;transform:translateX(-50%) scale(1.02)}}
+.splash-avatar{position:absolute;top:18%;left:50%;transform:translateX(-50%);width:240px;height:300px;display:flex;justify-content:center;align-items:flex-end}
+.avatar-silhouette{width:200px;height:260px;position:relative}
+.avatar-silhouette::before{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:140px;height:180px;background:radial-gradient(ellipse at center bottom,rgba(80,40,150,0.5),rgba(40,20,80,0.3),transparent 70%);border-radius:50% 50% 0 0}
+.avatar-silhouette::after{content:'';position:absolute;bottom:60px;left:50%;transform:translateX(-50%);width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(120,80,200,0.4),rgba(60,30,120,0.2));box-shadow:0 0 40px rgba(139,92,246,0.3)}
+.splash-logo-area{position:absolute;bottom:30%;left:50%;transform:translateX(-50%);text-align:center;width:100%;padding:0 40px}
+.splash-logo-icon{width:60px;height:60px;margin:0 auto 16px;position:relative}
+.splash-logo-icon svg{width:100%;height:100%;filter:drop-shadow(0 0 20px rgba(0,212,255,0.4))}
+.splash-brand{font-size:22px;font-weight:700;letter-spacing:6px;margin-bottom:4px;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.splash-sub{font-size:11px;letter-spacing:5px;color:var(--muted);margin-bottom:20px}
+.splash-tagline{font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:30px}
+.splash-heart{font-size:20px;margin-bottom:20px;opacity:0.6;animation:heartBeat 2s ease-in-out infinite}
+@keyframes heartBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.splash-loader{display:flex;flex-direction:column;align-items:center;gap:12px}
+.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,0.1);border-top-color:var(--blue);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.splash-loader-text{font-size:13px;color:var(--muted)}
+.splash-loader-sub{font-size:11px;color:rgba(255,255,255,0.3)}
+.splash-progress{position:absolute;bottom:12%;left:15%;right:15%;height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.splash-progress-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;transition:width 0.3s ease;box-shadow:0 0 10px rgba(0,212,255,0.5)}
+.splash-footer{position:absolute;bottom:5%;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.3)}
+.splash-footer svg{width:12px;height:12px;opacity:0.4}
+
+/* ========== ONBOARDING ========== */
+.onboard-screen{justify-content:space-between;padding:0;background:#000;overflow:hidden}
+.onboard-top{position:relative;height:55%;overflow:hidden}
+.onboard-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.onboard-gradient{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.1) 30%,rgba(0,0,0,0.6) 70%,rgba(0,0,0,1) 100%)}
+.onboard-brand{position:absolute;top:max(env(safe-area-inset-top,20px),20px);left:24px;display:flex;flex-direction:column;gap:4px}
+.onboard-brand-logo{width:36px;height:36px}
+.onboard-brand-logo svg{width:100%;height:100%}
+.onboard-brand-text{font-size:11px;letter-spacing:3px;color:rgba(255,255,255,0.7);font-weight:600}
+.onboard-brand-sub{font-size:9px;letter-spacing:4px;color:rgba(255,255,255,0.4)}
+.onboard-skip{position:absolute;top:max(env(safe-area-inset-top,20px),20px);right:20px;padding:8px 16px;border-radius:20px;background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.1);font-size:14px;color:var(--text);cursor:pointer;font-weight:500}
+.onboard-bottom{position:relative;height:45%;padding:0 28px;padding-bottom:max(env(safe-area-inset-bottom,20px),20px);display:flex;flex-direction:column;justify-content:center}
+.onboard-step-label{font-size:11px;letter-spacing:3px;color:var(--blue);font-weight:700;margin-bottom:10px;text-transform:uppercase}
+.onboard-title{font-size:32px;font-weight:800;line-height:1.15;margin-bottom:6px}
+.onboard-title .highlight{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.onboard-line{width:40px;height:3px;background:linear-gradient(90deg,var(--blue),var(--purple));border-radius:2px;margin:14px 0}
+.onboard-desc{font-size:15px;line-height:1.6;color:var(--muted);margin-bottom:20px}
+.onboard-features{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+.onboard-feature{display:flex;align-items:center;gap:10px;padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--border);backdrop-filter:blur(10px)}
+.onboard-feature .fi{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.onboard-feature .fi svg{width:16px;height:16px}
+.onboard-feature span{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.3}
+.onboard-bottom-row{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.onboard-dots{display:flex;gap:8px}
+.onboard-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.3s ease}
+.onboard-dot.active{width:24px;border-radius:4px;background:linear-gradient(90deg,var(--blue),var(--purple))}
+.onboard-continue{flex:1;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 8px 30px rgba(139,92,246,0.3);transition:transform 0.1s}
+.onboard-continue:active{transform:scale(0.97)}
+.onboard-continue svg{width:18px;height:18px}
+.onboard-privacy{position:absolute;bottom:max(env(safe-area-inset-bottom,10px),10px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,0.3)}
+.onboard-privacy svg{width:12px;height:12px;opacity:0.4}
+
+/* ========== MAIN APP ========== */
+.main-screen{flex-direction:column}
+.main-content{flex:1;overflow-y:auto;padding:16px;padding-bottom:100px;-webkit-overflow-scrolling:touch}
+.main-content::-webkit-scrollbar{width:0}
+.page{display:none;flex-direction:column;gap:16px;padding-top:8px}
+.page.active{display:flex}
+.page-header{padding:0 4px}
+.page-header h2{font-size:22px;font-weight:800;margin-bottom:2px}
+.page-header p{font-size:13px;color:var(--muted)}
+.btn{width:100%;padding:16px;border:none;border-radius:16px;font-weight:700;font-size:16px;color:#fff;background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 8px 30px rgba(139,92,246,0.3);cursor:pointer;transition:transform 0.1s;outline:none;user-select:none}
+.btn:active{transform:scale(0.97)}
+.btn.secondary{background:var(--card);box-shadow:none;border:1px solid var(--border)}
+.btn.small{width:auto;padding:10px 20px;font-size:14px;border-radius:12px;display:inline-block}
+.input{width:100%;margin:12px 0;padding:14px 16px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:14px;color:#fff;font-size:15px;outline:none;transition:border-color 0.2s}
+.input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(139,92,246,0.15)}
+.choices{display:grid;gap:8px;margin:14px 0}
+.choice{padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--border);text-align:left;cursor:pointer;transition:0.2s}
+.choice b{display:block;margin-bottom:2px;font-size:14px}
+.choice span{font-size:12px;color:var(--muted)}
+.choice.active{border-color:var(--purple);background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(0,212,255,0.08))}
+
+/* Stats */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;text-align:center;backdrop-filter:blur(10px)}
+.stat-card .num{font-size:28px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stat-card .label{font-size:11px;color:var(--muted);margin-top:2px}
+.stat-card .icon-wrap{width:36px;height:36px;margin:0 auto 6px;border-radius:10px;display:grid;place-items:center}
+.stat-card .icon-wrap svg{width:18px;height:18px}
+
+/* Quick Actions */
+.quick-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.quick-item{display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 6px;background:var(--card);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:0.2s}
+.quick-item:active{transform:scale(0.95);background:rgba(255,255,255,0.08)}
+.quick-item .qi-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center}
+.quick-item .qi-icon svg{width:20px;height:20px}
+.quick-item span{font-size:10px;color:var(--muted);font-weight:600}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:16px;backdrop-filter:blur(10px)}
+.card h3{font-size:15px;font-weight:700;margin-bottom:10px}
+
+/* Activity */
+.activity-list{display:grid;gap:8px}
+.activity-item{display:flex;align-items:center;gap:10px;padding:12px;background:rgba(255,255,255,0.02);border-radius:12px;border:1px solid var(--border)}
+.activity-item .ai-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.activity-item .ai-icon svg{width:16px;height:16px}
+.activity-item .ai-text{flex:1;min-width:0}
+.activity-item .ai-text b{font-size:13px;display:block}
+.activity-item .ai-text span{font-size:11px;color:var(--muted)}
+.activity-item .ai-time{font-size:10px;color:rgba(255,255,255,0.2);flex-shrink:0}
+
+/* Bottom Nav */
+.nav{position:absolute;bottom:0;left:0;right:0;display:flex;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:6px 0 max(env(safe-area-inset-bottom,8px),8px);z-index:50}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;cursor:pointer;color:rgba(255,255,255,0.25);transition:0.2s;user-select:none}
+.nav-item.active{color:var(--blue)}
+.nav-item svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.nav-item span{font-size:9px;font-weight:600;letter-spacing:0.3px}
+
+/* ========== CHAT ========== */
+.chat-page{padding:0;display:flex;flex-direction:column;height:100%;background:var(--bg)}
+.chat-header{height:52px;padding:0 14px;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);flex-shrink:0}
+.chat-header .avatar{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--purple));display:grid;place-items:center}
+.chat-header .avatar svg{width:16px;height:16px;stroke:white;fill:none;stroke-width:2}
+.chat-header .info{flex:1}
+.chat-header .info b{font-size:13px;display:block}
+.chat-header .info span{font-size:10px;color:var(--green);display:flex;align-items:center;gap:4px}
+.online-dot{width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green)}
+
+.mode-bar{display:flex;gap:6px;padding:6px 14px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--border)}
+.mode-bar::-webkit-scrollbar{display:none}
+.mode-chip{padding:6px 12px;border-radius:16px;font-size:10px;font-weight:700;border:1px solid var(--border);background:transparent;color:rgba(255,255,255,0.35);cursor:pointer;white-space:nowrap;transition:0.2s;flex-shrink:0;letter-spacing:0.3px}
+.mode-chip.active{background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(139,92,246,0.15));color:var(--blue);border-color:rgba(0,212,255,0.25)}
+.mode-chip:active{transform:scale(0.95)}
+
+.messages{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;-webkit-overflow-scrolling:touch}
+.messages::-webkit-scrollbar{width:0}
+.msg{max-width:82%;padding:11px 14px;border-radius:18px;font-size:14px;line-height:1.45;animation:msgIn 0.2s ease;word-wrap:break-word}
+.msg.user{align-self:flex-end;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border-bottom-right-radius:4px;box-shadow:0 4px 14px rgba(139,92,246,0.25)}
+.msg.ai{align-self:flex-start;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-bottom-left-radius:4px;backdrop-filter:blur(10px)}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}}
+.msg p{margin:5px 0;color:rgba(255,255,255,0.85);line-height:1.5}
+.msg strong{color:var(--blue)}
+.msg-meta{display:flex;gap:6px;margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.04)}
+.msg-mode{font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.msg-confidence{font-size:9px;color:rgba(255,255,255,0.2)}
+.msg .code-block{position:relative;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px;overflow-x:auto;color:rgba(255,255,255,0.8);line-height:1.5}
+.msg .code-block code{white-space:pre;display:block}
+.copy-btn{position:absolute;top:6px;right:6px;padding:3px 8px;border:none;border-radius:5px;background:rgba(139,92,246,0.25);color:var(--purple);font-size:10px;cursor:pointer;font-weight:600}
+.msg .inline-code{background:rgba(139,92,246,0.12);color:var(--purple);padding:1px 5px;border-radius:3px;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:12px}
+.msg h2,.msg h3,.msg h4{margin:8px 0 4px;color:var(--text)}
+.msg ul,.msg ol{margin:6px 0;padding-left:18px}
+.msg li{margin:3px 0;color:rgba(255,255,255,0.8)}
+.md-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12px}
+.md-table td{padding:6px 8px;border:1px solid var(--border);color:rgba(255,255,255,0.7)}
+.md-table tr:nth-child(odd) td{background:rgba(255,255,255,0.02)}
+
+.ai-suggestions{display:flex;gap:6px;padding:4px 14px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.ai-suggestions::-webkit-scrollbar{display:none}
+.suggestion-chip{padding:7px 12px;border-radius:14px;font-size:11px;border:1px solid var(--border);background:var(--card);color:rgba(255,255,255,0.5);cursor:pointer;white-space:nowrap;transition:0.2s;flex-shrink:0}
+.suggestion-chip:active{transform:scale(0.95);background:rgba(139,92,246,0.1)}
+
+.input-bar{padding:8px 12px max(env(safe-area-inset-bottom,8px),8px);display:flex;gap:8px;background:rgba(0,0,0,0.85);backdrop-filter:blur(16px);border-top:1px solid var(--border);flex-shrink:0}
+.input-bar input{flex:1;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:#fff;font-size:14px;outline:none}
+.input-bar input:focus{border-color:var(--purple)}
+.input-bar .send{width:42px;height:42px;border-radius:14px;border:none;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 4px 14px rgba(139,92,246,0.3);flex-shrink:0}
+.input-bar .send svg{width:18px;height:18px}
+
+.typing{display:flex;gap:4px;padding:12px 14px;align-self:flex-start}
+.typing span{width:6px;height:6px;background:rgba(255,255,255,0.2);border-radius:50%;animation:typingDot 1.2s infinite}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes typingDot{0%,60%,100%{opacity:0.2;transform:translateY(0)}30%{opacity:0.8;transform:translateY(-4px)}}
+
+/* ========== NOTES ========== */
+.notes-page{padding:16px}
+.note-grid{display:grid;gap:8px}
+.note-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;transition:0.2s}
+.note-card:active{transform:scale(0.98);background:rgba(255,255,255,0.06)}
+.note-card .note-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.note-card .note-body{font-size:12px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.note-card .note-time{font-size:10px;color:rgba(255,255,255,0.2);margin-top:6px}
+.note-card .note-tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:700;margin-top:4px}
+.add-note{position:fixed;bottom:90px;right:calc(50% - 195px);width:52px;height:52px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:26px;cursor:pointer;box-shadow:0 8px 30px rgba(139,92,246,0.35);z-index:60;display:grid;place-items:center}
+@media(min-width:431px){.add-note{right:calc(50% - 195px)}}
+
+/* ========== MORE / SETTINGS ========== */
+.settings-page{padding:16px}
+.setting-group{margin-bottom:18px}
+.setting-group h3{font-size:10px;letter-spacing:1.5px;color:var(--blue);margin-bottom:8px;font-weight:700;text-transform:uppercase}
+.setting-item{display:flex;align-items:center;gap:10px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:6px;cursor:pointer;transition:0.2s}
+.setting-item:active{background:rgba(255,255,255,0.06)}
+.setting-item .si-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.setting-item .si-icon svg{width:16px;height:16px}
+.setting-item .si-text{flex:1}
+.setting-item .si-text b{font-size:13px;display:block}
+.setting-item .si-text span{font-size:11px;color:var(--muted)}
+.setting-item .si-arrow{color:rgba(255,255,255,0.15);font-size:16px}
+.toggle{position:relative;width:40px;height:22px;background:rgba(255,255,255,0.1);border-radius:11px;cursor:pointer;transition:0.2s;flex-shrink:0}
+.toggle.on{background:linear-gradient(90deg,var(--blue),var(--purple))}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:0.2s}
+.toggle.on::after{left:20px}
+.version{text-align:center;font-size:10px;color:rgba(255,255,255,0.15);margin-top:12px}
+
+/* ========== MODALS ========== */
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);display:none;place-items:center;z-index:100;padding:20px}
+.modal-overlay.show{display:grid}
+.modal{width:100%;max-width:360px;background:rgba(12,12,22,0.95);border:1px solid var(--border);border-radius:22px;padding:24px 20px;backdrop-filter:blur(20px);animation:modalIn 0.25s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95) translateY(8px)}}
+.modal h2{font-size:18px;margin-bottom:10px}
+.modal textarea{width:100%;min-height:100px;margin:10px 0;padding:12px;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:12px;color:#fff;font-size:14px;font-family:inherit;resize:vertical;outline:none}
+.modal textarea:focus{border-color:var(--purple)}
+
+/* ========== TOOLS ========== */
+.tool-section{display:flex;gap:6px;margin:14px 0}
+.tool-tab{flex:1;padding:8px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;color:rgba(255,255,255,0.35);background:transparent;border:1px solid transparent;transition:0.2s}
+.tool-tab.active{background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(139,92,246,0.12));color:var(--blue);border-color:rgba(0,212,255,0.2)}
+.timer-display{font-size:48px;font-weight:800;text-align:center;margin:16px 0;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.timer-controls{display:flex;gap:10px;justify-content:center}
+.timer-btn{width:52px;height:52px;border-radius:50%;border:1.5px solid var(--border);background:var(--card);color:#fff;font-size:20px;cursor:pointer;display:grid;place-items:center;transition:0.2s}
+.timer-btn:active{transform:scale(0.9)}
+.timer-btn.primary{background:linear-gradient(135deg,var(--blue),var(--purple));border-color:transparent;box-shadow:0 4px 20px rgba(139,92,246,0.3)}
+
+.calc-display{text-align:right;font-size:32px;font-weight:700;padding:14px;min-height:60px;background:rgba(255,255,255,0.02);border-radius:12px;margin-bottom:10px;word-break:break-all;font-variant-numeric:tabular-nums}
+.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.calc-btn{padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:700;cursor:pointer;transition:0.1s;color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.04);user-select:none}
+.calc-btn:active{transform:scale(0.92)}
+.calc-btn.op{background:rgba(139,92,246,0.2);color:var(--purple)}
+.calc-btn.eq{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff}
+.calc-btn.clear{background:rgba(248,113,113,0.15);color:var(--red)}
+
+.weather-card{background:linear-gradient(135deg,rgba(0,212,255,0.1),rgba(139,92,246,0.1));border:1px solid var(--border);border-radius:18px;padding:18px;text-align:center}
+.weather-temp{font-size:56px;font-weight:800;background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+.weather-desc{font-size:14px;color:var(--muted);margin:2px 0 10px}
+.weather-details{display:flex;justify-content:space-around;margin-top:10px}
+.weather-detail{text-align:center}
+.weather-detail .wd-val{font-size:16px;font-weight:700}
+.weather-detail .wd-label{font-size:10px;color:var(--muted)}
+
+.qr-gen{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;text-align:center}
+.qr-display{width:180px;height:180px;margin:12px auto;background:#fff;border-radius:14px;display:grid;place-items:center;padding:10px}
+
+.pomo-phase{font-size:12px;color:var(--blue);font-weight:700;letter-spacing:1px;margin-bottom:6px;text-align:center}
+.pomo-count{display:flex;gap:5px;justify-content:center;margin-top:10px}
+.pomo-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid var(--border)}
+.pomo-dot.done{background:var(--green);border-color:var(--green)}
+
+/* ========== INSTALL BANNER ========== */
+.install-banner{position:absolute;left:12px;right:12px;bottom:calc(60px + max(env(safe-area-inset-bottom),8px));background:rgba(12,12,22,0.92);border:1px solid var(--border);backdrop-filter:blur(20px);border-radius:16px;padding:12px;display:none;gap:10px;align-items:center;z-index:90;box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+.install-banner.show{display:flex;animation:msgIn 0.3s}
+.install-banner .ib-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--blue),var(--purple));display:grid;place-items:center;flex-shrink:0}
+.install-banner .ib-text{flex:1;min-width:0}
+.install-banner .ib-text b{font-size:12px;display:block}
+.install-banner .ib-text span{font-size:10px;color:var(--muted)}
+.install-banner .btn{width:auto;padding:8px 14px;font-size:12px;border-radius:10px;flex-shrink:0}
+
+.offline-badge{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:8px 14px;display:none;z-index:80;font-size:12px;color:var(--red);backdrop-filter:blur(10px)}
+.offline-badge.show{display:block;animation:msgIn 0.3s}
+
+.floating-particles{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;opacity:0.1;animation:floatUp linear infinite}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0)}50%{opacity:0.2}100%{transform:translateY(-20vh) scale(1);opacity:0}}
+
+@media(min-width:431px){body{background:#000}.app{height:92dvh;border-radius:36px;border:1px solid var(--border);overflow:hidden}}
+@media(max-width:360px){.onboard-title{font-size:26px}.timer-display{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- ==================== SPLASH ==================== -->
+<section class="screen active" id="splash">
+  <div class="splash-bg"></div>
+  <div class="splash-ring"></div>
+  <div class="splash-logo-area">
+    <div class="splash-logo-icon">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lg" x1="0" y1="0" x2="60" y2="60"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs>
+        <path d="M30 8L8 32l22 20 22-20L30 8z" stroke="url(#lg)" stroke-width="2.5" fill="none" opacity="0.9"/>
+        <path d="M30 18L16 32l14 13 14-13L30 18z" fill="url(#lg)" opacity="0.25"/>
+        <path d="M30 24L21 32l9 8 9-8L30 24z" fill="url(#lg)" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="splash-brand">AHMEDDEV</div>
+    <div class="splash-sub">AVATAR 2036</div>
+  </div>
+  <div class="splash-tagline">Your private AI companion</div>
+  <div class="splash-heart">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </div>
+  <div class="splash-loader">
+    <div class="spinner"></div>
+    <div class="splash-loader-text">Initializing secure connection...</div>
+    <div class="splash-loader-sub">Protected by local encryption</div>
+  </div>
+  <div class="splash-progress"><div class="splash-progress-bar" id="pbar"></div></div>
+  <div class="splash-footer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+    Protected by biometrics and local encryption
+  </div>
+</section>
+
+<!-- ==================== ONBOARDING ==================== -->
+<section class="screen" id="onboard1" class="onboard-screen">
+  <div class="onboard-top">
+    <div class="onboard-bg" style="background:radial-gradient(ellipse at 50% 40%,rgba(99,50,200,0.4),rgba(0,0,0,0.9) 70%)"></div>
+    <div class="onboard-gradient"></div>
+    <div class="onboard-brand">
+      <div class="onboard-brand-logo">
+        <svg viewBox="0 0 36 36" fill="none"><defs><linearGradient id="og1" x1="0" y1="0" x2="36" y2="36"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><path d="M18 4L4 18l14 14 14-14L18 4z" stroke="url(#og1)" stroke-width="2" fill="none"/><path d="M18 10L10 18l8 8 8-8-8-8z" fill="url(#og1)" opacity="0.4"/></svg>
+      </div>
+      <div class="onboard-brand-text">AHMEDDEV</div>
+      <div class="onboard-brand-sub">AVATAR 2036</div>
+    </div>
+    <button class="onboard-skip" onclick="finishOnboarding()">Skip &gt;</button>
+  </div>
+  <div class="onboard-bottom">
+    <div class="onboard-title">Your private<br><span class="highlight">AI companion</span></div>
+    <div class="onboard-line"></div>
+    <div class="onboard-desc">A companion that listens, understands, and grows with you.</div>
+    <div class="onboard-features">
+      <div class="onboard-feature">
+        <div class="fi" style="background:rgba(139,92,246,0.15)"><svg viewBox="0 0 24 24" fill="var(--purple)"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <span>Emotionally<br>intelligent</span>
+      </div>
+      <div class="onboard-feature">
+        <div class="fi" style="background:rgba(0,212,255,0.15)"><svg viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+        <span>Remembers<br>what matters</span>
+      </div>
+      <div class="onboard-feature">
+        <div class="fi" style="background:rgba(52,211,153,0.15)"><svg viewBox="0 0 24 24" fill="var(--green)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="var(--green)" stroke-width="2" fill="none"/></svg></div>
+        <span>Privacy<br>first</span>
+      </div>
+      <div class="onboard-feature">
+        <div class="fi" style="background:rgba(255,255,255,0.08)"><svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.5)"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></div>
+        <span>Offline<br>capable</span>
+      </div>
+    </div>
+    <div class="onboard-bottom-row">
+      <div class="onboard-dots"><div class="onboard-dot active"></div><div class="onboard-dot"></div><div class="onboard-dot"></div></div>
+      <button class="onboard-continue" onclick="goTo('onboard2')">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="onboard2" class="onboard-screen">
+  <div class="onboard-top">
+    <div class="onboard-bg" style="background:radial-gradient(ellipse at 50% 40%,rgba(0,150,255,0.3),rgba(0,0,0,0.9) 70%)"></div>
+    <div class="onboard-gradient"></div>
+    <div class="onboard-brand">
+      <div class="onboard-brand-logo"><svg viewBox="0 0 36 36" fill="none"><defs><linearGradient id="og2" x1="0" y1="0" x2="36" y2="36"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><path d="M18 4L4 18l14 14 14-14L18 4z" stroke="url(#og2)" stroke-width="2" fill="none"/><path d="M18 10L10 18l8 8 8-8-8-8z" fill="url(#og2)" opacity="0.4"/></svg></div>
+      <div class="onboard-brand-text">AHMEDDEV</div>
+      <div class="onboard-brand-sub">AVATAR 2036</div>
+    </div>
+    <button class="onboard-skip" onclick="finishOnboarding()">Skip &gt;</button>
+  </div>
+  <div class="onboard-bottom">
+    <div class="onboard-step-label">STEP 2 OF 3</div>
+    <div class="onboard-title">More than<br>just AI.<br><span class="highlight">A companion<br>who gets you.</span></div>
+    <div class="onboard-line"></div>
+    <div class="onboard-desc">AHMEDDEV Avatar 2036 is your private AI companion designed for real connection, emotional support, and meaningful conversations.</div>
+    <div class="onboard-bottom-row">
+      <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot active"></div><div class="onboard-dot"></div></div>
+      <button class="onboard-continue" onclick="goTo('onboard3')">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="onboard3" class="onboard-screen">
+  <div class="onboard-top">
+    <div class="onboard-bg" style="background:radial-gradient(ellipse at 50% 40%,rgba(139,92,246,0.35),rgba(0,0,0,0.9) 70%)"></div>
+    <div class="onboard-gradient"></div>
+    <div class="onboard-brand">
+      <div class="onboard-brand-logo"><svg viewBox="0 0 36 36" fill="none"><defs><linearGradient id="og3" x1="0" y1="0" x2="36" y2="36"><stop offset="0%" stop-color="#00D4FF"/><stop offset="100%" stop-color="#8B5CF6"/></linearGradient></defs><path d="M18 4L4 18l14 14 14-14L18 4z" stroke="url(#og3)" stroke-width="2" fill="none"/><path d="M18 10L10 18l8 8 8-8-8-8z" fill="url(#og3)" opacity="0.4"/></svg></div>
+      <div class="onboard-brand-text">AHMEDDEV</div>
+      <div class="onboard-brand-sub">AVATAR 2036</div>
+    </div>
+    <button class="onboard-skip" onclick="finishOnboarding()">Skip &gt;</button>
+  </div>
+  <div class="onboard-bottom">
+    <div class="onboard-step-label">STEP 3 OF 3</div>
+    <div class="onboard-title">All features<br><span class="highlight">work offline</span></div>
+    <div class="onboard-line"></div>
+    <div class="onboard-desc">No internet needed. Your companion is always by your side — private, secure, and always available.</div>
+    <div class="onboard-features" style="grid-template-columns:1fr 1fr 1fr 1fr">
+      <div class="onboard-feature" style="flex-direction:column;text-align:center;padding:10px 4px">
+        <div class="fi" style="background:rgba(139,92,246,0.15);margin-bottom:4px"><svg viewBox="0 0 24 24" fill="var(--purple)" style="width:14px;height:14px"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <span style="font-size:9px;text-align:center;line-height:1.2">Emotional<br>intelligence</span>
+      </div>
+      <div class="onboard-feature" style="flex-direction:column;text-align:center;padding:10px 4px">
+        <div class="fi" style="background:rgba(0,212,255,0.15);margin-bottom:4px"><svg viewBox="0 0 24 24" fill="var(--blue)" style="width:14px;height:14px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4" stroke="var(--blue)" stroke-width="2" fill="none"/></svg></div>
+        <span style="font-size:9px;text-align:center;line-height:1.2">Private &<br>secure</span>
+      </div>
+      <div class="onboard-feature" style="flex-direction:column;text-align:center;padding:10px 4px">
+        <div class="fi" style="background:rgba(52,211,153,0.15);margin-bottom:4px"><svg viewBox="0 0 24 24" fill="var(--green)" style="width:14px;height:14px"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm-1 15l-4-4 1.41-1.41L11 14.17l6.59-6.59L19 9l-8 8z"/></svg></div>
+        <span style="font-size:9px;text-align:center;line-height:1.2">Remembers<br>what matters</span>
+      </div>
+      <div class="onboard-feature" style="flex-direction:column;text-align:center;padding:10px 4px">
+        <div class="fi" style="background:rgba(255,255,255,0.06);margin-bottom:4px"><svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)" style="width:14px;height:14px"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg></div>
+        <span style="font-size:9px;text-align:center;line-height:1.2">Works<br>offline</span>
+      </div>
+    </div>
+    <div class="onboard-bottom-row">
+      <div class="onboard-dots"><div class="onboard-dot"></div><div class="onboard-dot"></div><div class="onboard-dot active"></div></div>
+      <button class="onboard-continue" onclick="finishOnboarding()">Continue <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="onboard-privacy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Your privacy is protected. No data leaves your device.
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MAIN APP ==================== -->
+<section class="screen main-screen" id="main">
+  <div class="offline-badge" id="offlineBadge">You are offline — Everything still works!</div>
+
+  <div class="main-content" id="content">
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="page-header">
+        <h2 id="greeting">Good Morning</h2>
+        <p id="dateDisplay"></p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="icon-wrap" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+          <div class="num" id="chatCount">0</div>
+          <div class="label">Messages</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg></div>
+          <div class="num" id="noteCount">0</div>
+          <div class="label">Notes</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap" style="background:rgba(52,211,153,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="num" id="pomoCount">0</div>
+          <div class="label">Pomodoros</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon-wrap" style="background:rgba(255,159,67,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF9F43" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div>
+          <div class="num" id="daysActive">1</div>
+          <div class="label">Days Active</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Quick Actions</h3>
+        <div class="quick-grid">
+          <div class="quick-item" onclick="switchTab(1)">
+            <div class="qi-icon" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <span>Chat AI</span>
+          </div>
+          <div class="quick-item" onclick="switchTab(2)">
+            <div class="qi-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+            <span>Notes</span>
+          </div>
+          <div class="quick-item" onclick="openTool('calc')">
+            <div class="qi-icon" style="background:rgba(52,211,153,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4M8 18h4"/></svg></div>
+            <span>Calculator</span>
+          </div>
+          <div class="quick-item" onclick="openTool('timer')">
+            <div class="qi-icon" style="background:rgba(255,107,157,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF6B9D" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+            <span>Timer</span>
+          </div>
+          <div class="quick-item" onclick="openTool('weather')">
+            <div class="qi-icon" style="background:rgba(255,159,67,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF9F43" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2"/></svg></div>
+            <span>Weather</span>
+          </div>
+          <div class="quick-item" onclick="openTool('qr')">
+            <div class="qi-icon" style="background:rgba(248,113,113,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div>
+            <span>QR Code</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Recent Activity</h3>
+        <div class="activity-list" id="activityList">
+          <div class="activity-item">
+            <div class="ai-icon" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="width:14px;height:14px"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div>
+            <div class="ai-text"><b>App Installed</b><span>AVATAR 2036 is ready</span></div>
+            <div class="ai-time">Now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHAT -->
+    <div class="page chat-page" id="page-chat">
+      <div class="chat-header">
+        <div class="avatar"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M3 21v-2a7 7 0 0114 0v2"/></svg></div>
+        <div class="info">
+          <b>AVATAR AI</b>
+          <span><span class="online-dot"></span><span id="aiModeLabel">General</span> — 100% Offline</span>
+        </div>
+      </div>
+      <div class="mode-bar" id="modeBar">
+        <div class="mode-chip active" onclick="setAIMode('general',this)">General</div>
+        <div class="mode-chip" onclick="setAIMode('code',this)">Code</div>
+        <div class="mode-chip" onclick="setAIMode('math',this)">Math</div>
+        <div class="mode-chip" onclick="setAIMode('creative',this)">Creative</div>
+        <div class="mode-chip" onclick="setAIMode('translator',this)">Translate</div>
+      </div>
+      <div class="messages" id="messages">
+        <div class="msg ai"><b>AVATAR:</b> Hello! I'm your advanced AI assistant. I work fully offline with context-aware conversations, code generation, math, translation, and more. Ask me anything!<div class="msg-meta"><span class="msg-mode" style="background:rgba(0,212,255,0.12);color:var(--blue)">general</span></div></div>
+      </div>
+      <div class="ai-suggestions" id="aiSuggestions">
+        <div class="suggestion-chip" onclick="useSuggestion('What can you do?')">What can you do?</div>
+        <div class="suggestion-chip" onclick="useSuggestion('Write a function')">Write code</div>
+        <div class="suggestion-chip" onclick="useSuggestion('Solve 2+2*3')">Math problem</div>
+        <div class="suggestion-chip" onclick="useSuggestion('Tell me a joke')">Tell a joke</div>
+        <div class="suggestion-chip" onclick="useSuggestion('Explain machine learning')">Explain AI</div>
+      </div>
+      <div class="input-bar">
+        <input type="text" id="chatInput" placeholder="Type a message..." enterkeyhint="send">
+        <button class="send" onclick="sendMessage()"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="page notes-page" id="page-notes">
+      <div class="page-header"><h2>My Notes</h2><p>All saved offline on your device</p></div>
+      <div class="note-grid" id="noteGrid"></div>
+      <button class="add-note" onclick="openNoteModal()">+</button>
+    </div>
+
+    <!-- MORE -->
+    <div class="page" id="page-more">
+      <div class="page-header"><h2>Tools & Settings</h2><p>Everything works offline</p></div>
+      <div class="setting-group">
+        <h3>Tools</h3>
+        <div class="setting-item" onclick="openTool('calc')"><div class="si-icon" style="background:rgba(52,211,153,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" style="width:14px;height:14px"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4M8 18h4"/></svg></div><div class="si-text"><b>Calculator</b><span>Basic calculator</span></div><div class="si-arrow">&#8250;</div></div>
+        <div class="setting-item" onclick="openTool('timer')"><div class="si-icon" style="background:rgba(255,107,157,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF6B9D" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="si-text"><b>Timer & Stopwatch</b><span>Countdown & count up</span></div><div class="si-arrow">&#8250;</div></div>
+        <div class="setting-item" onclick="openTool('pomodoro')"><div class="si-icon" style="background:rgba(255,159,67,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF9F43" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div class="si-text"><b>Pomodoro Timer</b><span>25 min focus sessions</span></div><div class="si-arrow">&#8250;</div></div>
+        <div class="setting-item" onclick="openTool('weather')"><div class="si-icon" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42"/></svg></div><div class="si-text"><b>Weather</b><span>Demo weather display</span></div><div class="si-arrow">&#8250;</div></div>
+        <div class="setting-item" onclick="openTool('qr')"><div class="si-icon" style="background:rgba(248,113,113,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" style="width:14px;height:14px"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></div><div class="si-text"><b>QR Generator</b><span>Generate QR codes</span></div><div class="si-arrow">&#8250;</div></div>
+      </div>
+      <div class="setting-group">
+        <h3>Settings</h3>
+        <div class="setting-item" onclick="toggleSetting(this,'darkMode')"><div class="si-icon" style="background:rgba(139,92,246,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2" style="width:14px;height:14px"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg></div><div class="si-text"><b>Dark Mode</b><span>Always on for AMOLED</span></div><div class="toggle on" data-key="darkMode"></div></div>
+        <div class="setting-item" onclick="toggleSetting(this,'notifications')"><div class="si-icon" style="background:rgba(52,211,153,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" style="width:14px;height:14px"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div><div class="si-text"><b>Notifications</b><span>Push notifications</span></div><div class="toggle on" data-key="notifications"></div></div>
+        <div class="setting-item" onclick="toggleSetting(this,'sounds')"><div class="si-icon" style="background:rgba(255,159,67,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="#FF9F43" stroke-width="2" style="width:14px;height:14px"><path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/></svg></div><div class="si-text"><b>Sound Effects</b><span>Button sounds</span></div><div class="toggle on" data-key="sounds"></div></div>
+      </div>
+      <div class="setting-group">
+        <h3>Data</h3>
+        <div class="setting-item" onclick="exportData()"><div class="si-icon" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="width:14px;height:14px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div><div class="si-text"><b>Export Data</b><span>Download all your data</span></div><div class="si-arrow">&#8250;</div></div>
+        <div class="setting-item" onclick="clearAllData()"><div class="si-icon" style="background:rgba(248,113,113,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" style="width:14px;height:14px"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><div class="si-text"><b>Clear All Data</b><span>Remove all stored data</span></div><div class="si-arrow">&#8250;</div></div>
+      </div>
+      <div class="version">AVATAR 2036 v2036.1.0 — Made by AHMEDDEV</div>
+    </div>
+  </div>
+
+  <!-- NAV -->
+  <div class="nav">
+    <div class="nav-item active" onclick="switchTab(0)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></div>
+    <div class="nav-item" onclick="switchTab(1)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg><span>Chat</span></div>
+    <div class="nav-item" onclick="switchTab(2)"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg><span>Notes</span></div>
+    <div class="nav-item" onclick="switchTab(3)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg><span>More</span></div>
+  </div>
+</section>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="toolModal"><div class="modal" id="toolContent"></div></div>
+<div class="modal-overlay" id="noteModal"><div class="modal">
+  <h2 id="noteModalTitle">New Note</h2>
+  <input class="input" id="noteTitleInput" placeholder="Title" style="margin-top:0">
+  <textarea class="input" id="noteBodyInput" placeholder="Write something..." style="min-height:100px;resize:vertical;font-family:inherit"></textarea>
+  <div class="choices" style="grid-template-columns:1fr 1fr 1fr">
+    <div class="choice active" onclick="selectNoteTag(this,'blue')" style="padding:8px;text-align:center"><b style="color:var(--blue)">Blue</b></div>
+    <div class="choice" onclick="selectNoteTag(this,'purple')" style="padding:8px;text-align:center"><b style="color:var(--purple)">Purple</b></div>
+    <div class="choice" onclick="selectNoteTag(this,'green')" style="padding:8px;text-align:center"><b style="color:var(--green)">Green</b></div>
+  </div>
+  <button class="btn" onclick="saveNote()">Save Note</button>
+  <button class="btn secondary" style="margin-top:8px" onclick="closeNoteModal()">Cancel</button>
+  <button id="deleteNoteBtn" class="btn secondary" style="margin-top:8px;display:none;background:rgba(248,113,113,0.1);border-color:rgba(248,113,113,0.2);color:var(--red)" onclick="confirmDeleteNote()">Delete Note</button>
+</div></div>
+<div class="modal-overlay" id="confirmModal"><div class="modal" style="text-align:center">
+  <h2 id="confirmTitle">Are you sure?</h2>
+  <p id="confirmText">This action cannot be undone.</p>
+  <div style="display:flex;gap:8px;margin-top:14px">
+    <button class="btn secondary" onclick="closeConfirm()" style="flex:1">Cancel</button>
+    <button class="btn" id="confirmBtn" style="flex:1;background:linear-gradient(135deg,var(--red),#cc2244)">Confirm</button>
+  </div>
+</div></div>
+<div class="install-banner" id="installBanner">
+  <div class="ib-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:18px;height:18px"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></div>
+  <div class="ib-text"><b>Install AVATAR 2036</b><span>Add to home screen</span></div>
+  <button class="btn" onclick="installApp()">Install</button>
+</div>
+
+</div>
+
+<script src="ai-engine.js"></script>
+<script>
+const DB_NAME='avatar2036-db';const DB_VER=2;let db=null;let deferredPrompt=null;let editingNoteId=null;let selectedNoteTag='blue';let ai=null;let pomoInterval=null;let pomoSeconds=25*60;let pomoRunning=false;let pomoPhase='work';let pomoSessions=0;let timerInterval=null;let timerSeconds=0;let timerRunning=false;let stopwatchInterval=null;let stopwatchMs=0;let stopwatchRunning=false;let calcDisplay='0';let calcPrev='';let calcOp='';let calcReset=false;
+
+function initDB(){return new Promise((r,j)=>{const q=indexedDB.open(DB_NAME,DB_VER);q.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('notes'))d.createObjectStore('notes',{keyPath:'id',autoIncrement:true});if(!d.objectStoreNames.contains('chat'))d.createObjectStore('chat',{keyPath:'id',autoIncrement:true});if(!d.objectStoreNames.contains('settings'))d.createObjectStore('settings',{keyPath:'key'});if(!d.objectStoreNames.contains('activity'))d.createObjectStore('activity',{keyPath:'id',autoIncrement:true})};q.onsuccess=e=>{db=e.target.result;r(db)};q.onerror=e=>j(e.target.error)})}
+function dbAdd(s,d){return new Promise((r,j)=>{const t=db.transaction(s,'readwrite');const q=t.objectStore(s).add(d);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+function dbGetAll(s){return new Promise((r,j)=>{const t=db.transaction(s,'readonly');const q=t.objectStore(s).getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+function dbPut(s,d){return new Promise((r,j)=>{const t=db.transaction(s,'readwrite');const q=t.objectStore(s).put(d);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+function dbDelete(s,id){return new Promise((r,j)=>{const t=db.transaction(s,'readwrite');t.objectStore(s).delete(id);t.oncomplete=()=>r();t.onerror=()=>j(t.error)})}
+function dbGet(s,k){return new Promise((r,j)=>{const t=db.transaction(s,'readonly');const q=t.objectStore(s).get(k);q.onsuccess=()=>r(q.result);q.onerror=()=>j(q.error)})}
+function dbClear(s){return new Promise((r,j)=>{const t=db.transaction(s,'readwrite');t.objectStore(s).clear();t.oncomplete=()=>r();t.onerror=()=>j(t.error)})}
+
+function init(){ai=new AvatarAI();initDB().then(()=>{loadStats();loadNotes();loadSettings();loadChatHistory();addActivity('App Started','AVATAR 2036 loaded')});setupNav();setupChat();updateGreeting();startParticles('particles');checkOnline();registerSW();runSplash()}
+
+function registerSW(){if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js').then(r=>{r.addEventListener('updatefound',()=>{})}).catch(e=>{})}}
+
+function runSplash(){const bar=document.getElementById('pbar');let w=0;const iv=setInterval(()=>{w+=Math.random()*12+4;if(w>=100){w=100;clearInterval(iv);setTimeout(()=>goTo('onboard1'),400)}bar.style.width=w+'%'},250)}
+
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
+function finishOnboarding(){localStorage.setItem('avatar2036_onboarded','1');goTo('main');updateStats()}
+
+function setupNav(){document.querySelectorAll('.nav-item').forEach((item,i)=>{item.addEventListener('click',()=>switchTab(i))})}
+function switchTab(idx){const pages=['page-home','page-chat','page-notes','page-more'];document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(pages[idx]).classList.add('active');document.querySelectorAll('.nav-item').forEach((n,i)=>{n.classList.toggle('active',i===idx)});if(idx===2)loadNotes();if(idx===0){loadStats();loadActivity()}}
+
+function updateGreeting(){const h=new Date().getHours();let g='Good Morning';if(h>=12&&h<17)g='Good Afternoon';else if(h>=17&&h<21)g='Good Evening';else if(h>=21||h<5)g='Good Night';document.getElementById('greeting').textContent=g;const days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];const months=['January','February','March','April','May','June','July','August','September','October','November','December'];const now=new Date();document.getElementById('dateDisplay').textContent=days[now.getDay()]+', '+months[now.getMonth()]+' '+now.getDate()+', '+now.getFullYear()}
+
+function checkOnline(){function u(){const b=document.getElementById('offlineBadge');if(!navigator.onLine)b.classList.add('show');else b.classList.remove('show')}window.addEventListener('online',u);window.addEventListener('offline',u);u()}
+
+// CHAT
+function setupChat(){const input=document.getElementById('chatInput');input.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();sendMessage()}})}
+function setAIMode(mode,el){if(!ai)return;ai.setMode(mode);document.querySelectorAll('.mode-chip').forEach(c=>c.classList.remove('active'));if(el)el.classList.add('active');document.getElementById('aiModeLabel').textContent=mode.charAt(0).toUpperCase()+mode.slice(1)}
+function useSuggestion(text){document.getElementById('chatInput').value=text;sendMessage()}
+
+async function sendMessage(){const input=document.getElementById('chatInput');const text=input.value.trim();if(!text)return;input.value='';addMsg(text,'user');await dbAdd('chat',{text,type:'user',time:Date.now()});
+if(text.startsWith('/mode')){const mode=text.replace('/mode','').trim();if(['general','code','math','creative','translator'].includes(mode)){ai.setMode(mode);addMsg(ai.setMode(mode),'ai');return}}
+if(text.startsWith('/clear')){ai.clearMemory();document.getElementById('messages').innerHTML='<div class="msg ai"><b>AVATAR:</b> Memory cleared. How can I help you?</div>';return}
+const msgDiv=document.createElement('div');msgDiv.className='typing';msgDiv.innerHTML='<span></span><span></span><span></span>';document.getElementById('messages').appendChild(msgDiv);scrollChat();
+setTimeout(async()=>{msgDiv.remove();const result=ai.process(text);addMsg(result.text,'ai',result);await dbAdd('chat',{text:result.text,type:'ai',time:Date.now(),mode:result.mode,topic:result.topic,sentiment:result.sentiment});loadStats()},400+Math.random()*1200)}
+
+function renderMarkdown(text){let html=text.replace(/```(\w+)?\n([\s\S]*?)```/g,'<div class="code-block"><code>$2</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>').replace(/`([^`]+)`/g,'<span class="inline-code">$1</span>').replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\*([^*]+)\*/g,'<em>$1</em>').replace(/^### (.+)$/gm,'<h4>$1</h4>').replace(/^## (.+)$/gm,'<h3>$1</h3>').replace(/^# (.+)$/gm,'<h2>$1</h2>').replace(/^\|(.+)\|$/gm,(m)=>{const c=m.split('|').filter(x=>x.trim());if(c.every(x=>x.trim().match(/^-+$/)))return'';return'<tr>'+c.map(x=>'<td>'+x.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>[\s\S]*?<\/tr>)/g,(m)=>'<table class="md-table">'+m+'</table>').replace(/^[\-\*] (.+)$/gm,'<li>$1</li>').replace(/(<li>[\s\S]*<\/li>)/gs,'<ul>$1</ul>').replace(/<\/ul>\s*<ul>/g,'').replace(/^(?!<[hultp])((?!^$).+)$/gm,'<p>$1</p>').replace(/<p><\/p>/g,'').replace(/\n/g,'<br>');return html}
+
+function copyCode(btn){const code=btn.previousElementSibling.textContent;navigator.clipboard.writeText(code).then(()=>{btn.textContent='Copied!';setTimeout(()=>btn.textContent='Copy',2000)})}
+
+function addMsg(text,type,result){const div=document.createElement('div');div.className='msg '+type;if(type==='ai'){let meta='';if(result){const mc={general:'var(--blue)',code:'var(--green)',math:'var(--orange)',creative:'var(--pink)',translator:'var(--purple)'};meta='<div class="msg-meta"><span class="msg-mode" style="background:rgba('+(result.mode==='code'?'52,211,153':result.mode==='math'?'255,159,67':result.mode==='creative'?'255,107,157':result.mode==='translator'?'139,92,246':'0,212,255')+',0.12);color:'+(mc[result.mode]||mc.general)+'">'+result.mode+'</span><span class="msg-confidence">'+Math.round(result.confidence*100)+'%</span></div>'}div.innerHTML='<b>AVATAR:</b> '+renderMarkdown(text)+meta}else{div.textContent=text}document.getElementById('messages').appendChild(div);scrollChat()}
+
+function scrollChat(){const m=document.getElementById('messages');setTimeout(()=>m.scrollTop=m.scrollHeight,50)}
+
+async function loadChatHistory(){try{const chats=await dbGetAll('chat');const msgs=document.getElementById('messages');if(chats.length>1){msgs.innerHTML='<div class="msg ai"><b>AVATAR:</b> Hello! I am your AI assistant. I work fully offline. Ask me anything!</div>';chats.slice(-50).forEach(c=>addMsg(c.text,c.type))}}catch(e){}}
+
+// NOTES
+let currentNoteTag='blue';
+function selectNoteTag(el,tag){document.querySelectorAll('#noteModal .choice').forEach(c=>c.classList.remove('active'));el.classList.add('active');currentNoteTag=tag}
+
+function openNoteModal(id){editingNoteId=id||null;document.getElementById('noteModalTitle').textContent=id?'Edit Note':'New Note';const db=document.getElementById('deleteNoteBtn');if(db)db.style.display=id?'block':'none';if(id){dbGet('notes',id).then(note=>{if(note){document.getElementById('noteTitleInput').value=note.title;document.getElementById('noteBodyInput').value=note.body;currentNoteTag=note.tag||'blue';document.querySelectorAll('#noteModal .choice').forEach(c=>{c.classList.toggle('active',c.querySelector('b').textContent.toLowerCase()===currentNoteTag)})}})}else{document.getElementById('noteTitleInput').value='';document.getElementById('noteBodyInput').value='';currentNoteTag='blue';document.querySelectorAll('#noteModal .choice').forEach((c,i)=>c.classList.toggle('active',i===0))}document.getElementById('noteModal').classList.add('show');setTimeout(()=>document.getElementById('noteTitleInput').focus(),300)}
+function closeNoteModal(){document.getElementById('noteModal').classList.remove('show');editingNoteId=null}
+
+async function saveNote(){const title=document.getElementById('noteTitleInput').value.trim();const body=document.getElementById('noteBodyInput').value.trim();if(!title&&!body)return;const data={title:title||'Untitled',body:body||'',tag:currentNoteTag,time:Date.now()};if(editingNoteId){data.id=editingNoteId;await dbPut('notes',data)}else{await dbAdd('notes',data)}closeNoteModal();loadNotes();loadStats();addActivity('Note Saved',title||'Untitled')}
+
+async function deleteNote(id){await dbDelete('notes',id);loadNotes();loadStats();closeNoteModal()}
+function confirmDeleteNote(){if(!editingNoteId)return;document.getElementById('confirmTitle').textContent='Delete this note?';document.getElementById('confirmText').textContent='This action cannot be undone.';document.getElementById('confirmBtn').onclick=async()=>{await deleteNote(editingNoteId);closeConfirm()};document.getElementById('confirmModal').classList.add('show')}
+
+async function loadNotes(){try{const notes=await dbGetAll('notes');const grid=document.getElementById('noteGrid');if(notes.length===0){grid.innerHTML='<div style="text-align:center;padding:40px 20px;color:rgba(255,255,255,0.2)"><p>No notes yet</p><p style="margin-top:6px;font-size:12px">Tap + to create your first note</p></div>';return}const tc={blue:'var(--blue)',purple:'var(--purple)',green:'var(--green)'};grid.innerHTML=notes.sort((a,b)=>b.time-a.time).map(n=>'<div class="note-card" onclick="openNoteModal('+n.id+')"><div class="note-title">'+escHtml(n.title)+'</div>'+(n.body?'<div class="note-body">'+escHtml(n.body)+'</div>':'')+'<div class="note-time">'+timeAgo(n.time)+'</div><div class="note-tag" style="background:rgba('+(n.tag==='green'?'52,211,153':n.tag==='purple'?'139,92,246':'0,212,255')+',0.1);color:'+(tc[n.tag]||tc.blue)+'">'+(n.tag||'blue')+'</div></div>').join('')}catch(e){}}
+
+// TOOLS
+function openTool(tool){const modal=document.getElementById('toolModal');const content=document.getElementById('toolContent');switch(tool){case'calc':content.innerHTML=buildCalculator();initCalc();break;case'timer':content.innerHTML=buildTimer();break;case'pomodoro':content.innerHTML=buildPomodoro();break;case'weather':content.innerHTML=buildWeather();break;case'qr':content.innerHTML=buildQR();break;default:return}modal.classList.add('show')}
+function closeTool(){document.getElementById('toolModal').classList.remove('show');if(timerInterval){clearInterval(timerInterval);timerInterval=null;timerRunning=false}if(stopwatchInterval){clearInterval(stopwatchInterval);stopwatchInterval=null;stopwatchRunning=false}if(pomoInterval){clearInterval(pomoInterval);pomoInterval=null;pomoRunning=false}}
+
+function buildCalculator(){return '<h2>Calculator</h2><div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px"><div class="calc-display" id="calcDisplay">0</div><div class="calc-grid"><button class="calc-btn clear" onclick="calcClear()">AC</button><button class="calc-btn op" onclick="calcBackspace()">&#9003;</button><button class="calc-btn op" onclick="calcInput(\'%\')">%</button><button class="calc-btn op" onclick="calcInput(\'/\')">&#247;</button><button class="calc-btn" onclick="calcInput(\'7\')">7</button><button class="calc-btn" onclick="calcInput(\'8\')">8</button><button class="calc-btn" onclick="calcInput(\'9\')">9</button><button class="calc-btn op" onclick="calcInput(\'*\')">&#215;</button><button class="calc-btn" onclick="calcInput(\'4\')">4</button><button class="calc-btn" onclick="calcInput(\'5\')">5</button><button class="calc-btn" onclick="calcInput(\'6\')">6</button><button class="calc-btn op" onclick="calcInput(\'-\')">&#8722;</button><button class="calc-btn" onclick="calcInput(\'1\')">1</button><button class="calc-btn" onclick="calcInput(\'2\')">2</button><button class="calc-btn" onclick="calcInput(\'3\')">3</button><button class="calc-btn op" onclick="calcInput(\'+\')">+</button><button class="calc-btn" onclick="calcInput(\'00\')">00</button><button class="calc-btn" onclick="calcInput(\'0\')">0</button><button class="calc-btn" onclick="calcInput(\'.\')">.</button><button class="calc-btn eq" onclick="calcEquals()">=</button></div></div><button class="btn secondary" style="margin-top:10px" onclick="closeTool()">Close</button>'}
+
+function initCalc(){calcDisplay='0';calcPrev='';calcOp='';calcReset=false}
+function calcInput(val){const d=document.getElementById('calcDisplay');if(!d)return;if('+-*/%'.includes(val)){if(calcOp&&!calcReset)calcEquals();calcPrev=calcDisplay;calcOp=val;calcReset=true;d.textContent=calcDisplay+' '+({'+':'+','-':'-','*':'*','/':'/','%':'%'})[val];return}if(calcReset||calcDisplay==='0'){calcDisplay=val==='.'?'0.':val;calcReset=false}else{if(val==='.'&&calcDisplay.includes('.'))return;calcDisplay+=val}d.textContent=calcDisplay}
+function calcClear(){calcDisplay='0';calcPrev='';calcOp='';calcReset=false;const d=document.getElementById('calcDisplay');if(d)d.textContent='0'}
+function calcBackspace(){if(calcDisplay.length>1)calcDisplay=calcDisplay.slice(0,-1);else calcDisplay='0';const d=document.getElementById('calcDisplay');if(d)d.textContent=calcDisplay}
+function calcEquals(){if(!calcOp||!calcPrev)return;const a=parseFloat(calcPrev),b=parseFloat(calcDisplay);let r;switch(calcOp){case'+':r=a+b;break;case'-':r=a-b;break;case'*':r=a*b;break;case'/':r=b!==0?a/b:'Error';break;case'%':r=b!==0?a%b:'Error';break;default:return}calcDisplay=typeof r==='number'?String(Math.round(r*1e10)/1e10):r;calcOp='';calcPrev='';calcReset=true;const d=document.getElementById('calcDisplay');if(d)d.textContent=calcDisplay}
+
+function buildTimer(){return '<h2>Timer & Stopwatch</h2><div class="tool-section"><button class="tool-tab active" onclick="showTimerSection(\'countdown\',this)">Countdown</button><button class="tool-tab" onclick="showTimerSection(\'stopwatch\',this)">Stopwatch</button></div><div id="timerCountdown"><div class="timer-display" id="timerDisplay">05:00</div><div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px"><button class="btn secondary small" onclick="setTimer(60)">1m</button><button class="btn secondary small" onclick="setTimer(300)">5m</button><button class="btn secondary small" onclick="setTimer(600)">10m</button><button class="btn secondary small" onclick="setTimer(900)">15m</button></div><div class="timer-controls"><button class="timer-btn" onclick="resetTimer()">&#8634;</button><button class="timer-btn primary" id="timerStartBtn" onclick="toggleTimer()">&#9654;</button></div></div><div id="timerStopwatch" style="display:none"><div class="timer-display" id="stopwatchDisplay">00:00:00</div><div class="timer-controls"><button class="timer-btn" onclick="resetStopwatch()">&#8634;</button><button class="timer-btn primary" id="stopwatchStartBtn" onclick="toggleStopwatch()">&#9654;</button></div></div><button class="btn secondary" style="margin-top:14px" onclick="closeTool()">Close</button>'}
+
+function showTimerSection(s,el){document.getElementById('timerCountdown').style.display=s==='countdown'?'block':'none';document.getElementById('timerStopwatch').style.display=s==='stopwatch'?'block':'none';document.querySelectorAll('.tool-tab').forEach(t=>t.classList.remove('active'));if(el)el.classList.add('active')}
+function setTimer(s){timerSeconds=s;timerRunning=false;if(timerInterval)clearInterval(timerInterval);updateTimerDisplay()}
+function updateTimerDisplay(){const m=Math.floor(timerSeconds/60),s=timerSeconds%60;const d=document.getElementById('timerDisplay');if(d)d.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function toggleTimer(){if(timerRunning){clearInterval(timerInterval);timerRunning=false;document.getElementById('timerStartBtn').innerHTML='&#9654;'}else{if(timerSeconds<=0)timerSeconds=300;timerRunning=true;document.getElementById('timerStartBtn').innerHTML='&#9646;&#9646;';timerInterval=setInterval(()=>{timerSeconds--;updateTimerDisplay();if(timerSeconds<=0){clearInterval(timerInterval);timerRunning=false;document.getElementById('timerStartBtn').innerHTML='&#9654;'}},1000)}}
+function resetTimer(){clearInterval(timerInterval);timerRunning=false;timerSeconds=300;updateTimerDisplay();document.getElementById('timerStartBtn').innerHTML='&#9654;'}
+function toggleStopwatch(){if(stopwatchRunning){clearInterval(stopwatchInterval);stopwatchRunning=false;document.getElementById('stopwatchStartBtn').innerHTML='&#9654;'}else{stopwatchRunning=true;document.getElementById('stopwatchStartBtn').innerHTML='&#9646;&#9646;';stopwatchInterval=setInterval(()=>{stopwatchMs+=10;updateStopwatchDisplay()},10)}}
+function resetStopwatch(){clearInterval(stopwatchInterval);stopwatchRunning=false;stopwatchMs=0;updateStopwatchDisplay();document.getElementById('stopwatchStartBtn').innerHTML='&#9654;'}
+function updateStopwatchDisplay(){const h=Math.floor(stopwatchMs/3600000),m=Math.floor((stopwatchMs%3600000)/60000),s=Math.floor((stopwatchMs%60000)/1000);const d=document.getElementById('stopwatchDisplay');if(d)d.textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+
+function buildPomodoro(){return '<h2>Pomodoro Timer</h2><div style="text-align:center"><div class="pomo-phase" id="pomoPhase">WORK SESSION</div><div class="timer-display" id="pomoDisplay">25:00</div><div class="pomo-count" id="pomoDots"></div><div class="timer-controls" style="margin-top:14px"><button class="timer-btn" onclick="resetPomodoro()">&#8634;</button><button class="timer-btn primary" id="pomoStartBtn" onclick="togglePomodoro()">&#9654;</button></div><div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.3)">25 min work / 5 min break</div></div><button class="btn secondary" style="margin-top:14px" onclick="closeTool()">Close</button>'}
+function updatePomoDisplay(){const m=Math.floor(pomoSeconds/60),s=pomoSeconds%60;const d=document.getElementById('pomoDisplay');if(d)d.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function updatePomoDots(){const d=document.getElementById('pomoDots');if(d)d.innerHTML=Array.from({length:4},(_,i)=>'<div class="pomo-dot'+(i<pomoSessions?' done':'')+'"></div>').join('')}
+function togglePomodoro(){if(pomoRunning){clearInterval(pomoInterval);pomoRunning=false;document.getElementById('pomoStartBtn').innerHTML='&#9654;';return}pomoRunning=true;document.getElementById('pomoStartBtn').innerHTML='&#9646;&#9646;';pomoInterval=setInterval(()=>{pomoSeconds--;updatePomoDisplay();if(pomoSeconds<=0){clearInterval(pomoInterval);pomoRunning=false;if(pomoPhase==='work'){pomoSessions++;pomoPhase='break';pomoSeconds=5*60;const p=document.getElementById('pomoPhase');if(p)p.textContent='BREAK TIME';addActivity('Pomodoro','Completed focus session!')}else{pomoPhase='work';pomoSeconds=25*60;const p=document.getElementById('pomoPhase');if(p)p.textContent='WORK SESSION'}updatePomoDots();document.getElementById('pomoStartBtn').innerHTML='&#9654;';loadStats()}},1000)}
+function resetPomodoro(){clearInterval(pomoInterval);pomoRunning=false;pomoPhase='work';pomoSeconds=25*60;const p=document.getElementById('pomoPhase');if(p)p.textContent='WORK SESSION';updatePomoDisplay();document.getElementById('pomoStartBtn').innerHTML='&#9654;'}
+
+function buildWeather(){const conditions=['Sunny','Partly Cloudy','Cloudy','Rainy','Windy','Clear'];const cond=conditions[Math.floor(Math.random()*conditions.length)];const temp=Math.floor(Math.random()*30)+10;const humidity=Math.floor(Math.random()*60)+30;const wind=Math.floor(Math.random()*20)+5;const icons={'Sunny':'&#9728;','Partly Cloudy':'&#9925;','Cloudy':'&#9729;','Rainy':'&#127783;','Windy':'&#127744;','Clear':'&#127780;'};return '<h2>Weather</h2><div class="weather-card"><div style="font-size:40px">'+icons[cond]+'</div><div class="weather-temp">'+temp+'&deg;</div><div class="weather-desc">'+cond+'</div><div class="weather-details"><div class="weather-detail"><div class="wd-val">'+humidity+'%</div><div class="wd-label">Humidity</div></div><div class="weather-detail"><div class="wd-val">'+wind+' km/h</div><div class="wd-label">Wind</div></div><div class="weather-detail"><div class="wd-val">'+(temp+3)+'&deg;</div><div class="wd-label">Feels Like</div></div></div></div><p style="margin-top:10px;text-align:center;font-size:11px;color:rgba(255,255,255,0.2)">Demo weather data (offline mode)</p><button class="btn secondary" style="margin-top:10px" onclick="closeTool()">Close</button>'}
+
+function buildQR(){return '<h2>QR Code Generator</h2><input class="input" id="qrInput" placeholder="Enter text or URL..." value="https://ahmeddev.com"><button class="btn" onclick="generateQR()" style="margin-top:0">Generate QR</button><div class="qr-display" id="qrDisplay"></div><button class="btn secondary" style="margin-top:10px" onclick="closeTool()">Close</button>'}
+function generateQR(){const input=document.getElementById('qrInput').value.trim();if(!input)return;const display=document.getElementById('qrDisplay');const size=21;const grid=[];for(let i=0;i<size*size;i++)grid.push(0);function setCell(r,c,v){if(r>=0&&r<size&&c>=0&&c<size)grid[r*size+c]=v}for(let i=0;i<7;i++){setCell(0,i,1);setCell(6,i,1);setCell(i,0,1);setCell(i,6,1)}for(let i=0;i<7;i++){setCell(0,size-1-i,1);setCell(6,size-1-i,1);setCell(i,size-1-i,1);setCell(i,size-7,1)}for(let r=0;r<size;r++){for(let c=0;c<size;c++){if((r<8&&c<8)||(r<8&&c>size-9)||(r>size-9&&c<8))continue;if(r===6||c===6)continue;setCell(r,c,((r*7+c*13+input.charCodeAt(r%input.length))%3===0)?1:0)}}const cs=Math.floor(176/size);let svg='<svg xmlns="http://www.w3.org/2000/svg" width="176" height="176" viewBox="0 0 '+size*cs+' '+size*cs+'"><rect width="'+size*cs+'" height="'+size*cs+'" fill="white"/>';for(let r=0;r<size;r++){for(let c=0;c<size;c++){if(grid[r*size+c])svg+='<rect x="'+c*cs+'" y="'+r*cs+'" width="'+cs+'" height="'+cs+'" fill="#020208"/>'}}svg+='</svg>';display.innerHTML=svg}
+
+// SETTINGS
+async function loadSettings(){try{const settings=await dbGetAll('settings');settings.forEach(s=>{const toggle=document.querySelector('.toggle[data-key="'+s.key+'"]');if(toggle)toggle.classList.toggle('on',s.value)})}catch(e){}}
+async function toggleSetting(el,key){const toggle=el.querySelector('.toggle');toggle.classList.toggle('on');dbPut('settings',{key,value:toggle.classList.contains('on')})}
+
+// STATS
+async function loadStats(){try{const chats=await dbGetAll('chat');const notes=await dbGetAll('notes');document.getElementById('chatCount').textContent=chats.length;document.getElementById('noteCount').textContent=notes.length;document.getElementById('pomoCount').textContent=pomoSessions;if(!localStorage.getItem('avatar2036_first_visit'))localStorage.setItem('avatar2036_first_visit',Date.now());const days=Math.max(1,Math.ceil((Date.now()-parseInt(localStorage.getItem('avatar2036_first_visit')||Date.now()))/86400000));document.getElementById('daysActive').textContent=days}catch(e){}}
+function updateStats(){loadStats()}
+
+// ACTIVITY
+async function addActivity(title,desc){try{await dbAdd('activity',{title,desc,time:Date.now()})}catch(e){}}
+async function loadActivity(){try{const items=await dbGetAll('activity');const list=document.getElementById('activityList');const recent=items.sort((a,b)=>b.time-a.time).slice(0,6);if(recent.length===0)return;list.innerHTML=recent.map(a=>'<div class="activity-item"><div class="ai-icon" style="background:rgba(0,212,255,0.1)"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" style="width:14px;height:14px"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg></div><div class="ai-text"><b>'+escHtml(a.title)+'</b><span>'+escHtml(a.desc||'')+'</span></div><div class="ai-time">'+timeAgo(a.time)+'</div></div>').join('')}catch(e){}}
+
+// EXPORT/CLEAR
+async function exportData(){try{const notes=await dbGetAll('notes');const chats=await dbGetAll('chat');const data={notes,chats,exportDate:new Date().toISOString(),version:'2036.1.0'};const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='avatar2036_backup_'+Date.now()+'.json';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);addActivity('Data Exported','Backup downloaded')}catch(e){}}
+function clearAllData(){document.getElementById('confirmModal').classList.add('show');document.getElementById('confirmTitle').textContent='Clear all data?';document.getElementById('confirmText').textContent='All notes, chat history, and settings will be removed.';document.getElementById('confirmBtn').onclick=async()=>{await dbClear('notes');await dbClear('chat');await dbClear('activity');document.getElementById('confirmModal').classList.remove('show');loadStats();loadNotes();document.getElementById('messages').innerHTML='<div class="msg ai"><b>AVATAR:</b> Chat cleared. How can I help you?</div>';addActivity('Data Cleared','All data removed')}}
+function closeConfirm(){document.getElementById('confirmModal').classList.remove('show')}
+
+// INSTALL
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBanner').classList.add('show')});
+async function installApp(){if(!deferredPrompt)return;deferredPrompt.prompt();const{outcome}=await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById('installBanner').classList.remove('show')}
+
+// PARTICLES
+function startParticles(id){const container=document.getElementById(id);if(!container)return;for(let i=0;i<12;i++){const p=document.createElement('div');p.className='particle';const size=Math.random()*3+1.5;p.style.cssText='width:'+size+'px;height:'+size+'px;left:'+Math.random()*100+'%;background:'+(Math.random()>0.5?'var(--blue)':'var(--purple)')+';animation-duration:'+(Math.random()*12+10)+'s;animation-delay:'+(Math.random()*10)+'s';container.appendChild(p)}}
+
+// UTILS
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function timeAgo(ts){const diff=Date.now()-ts;if(diff<60000)return 'Just now';if(diff<3600000)return Math.floor(diff/60000)+'m ago';if(diff<86400000)return Math.floor(diff/3600000)+'h ago';if(diff<604800000)return Math.floor(diff/86400000)+'d ago';return new Date(ts).toLocaleDateString()}
+
+document.addEventListener('DOMContentLoaded',init);
+</script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{
+  "name": "AHMEDDEV AVATAR 2036 - Full Offline PWA",
+  "short_name": "AVATAR2036",
+  "description": "Complete Offline PWA - Works on All Devices Until 2036",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020208",
+  "theme_color": "#8B5CF6",
+  "lang": "en",
+  "scope": "./",
+  "id": "/avatar2036/",
+  "categories": ["productivity", "utilities"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300D4FF'/%3E%3Cstop offset='100%25' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='128' fill='%23020208'/%3E%3Ccircle cx='256' cy='212' r='110' fill='url(%23g)'/%3E%3Cpath d='M156 360c20-40 60-66 100-66s80 26 100 66' stroke='url(%23g)' stroke-width='28' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%2300D4FF'/%3E%3Cstop offset='100%25' stop-color='%238B5CF6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='192' height='192' rx='48' fill='%23020208'/%3E%3Ccircle cx='96' cy='80' r='42' fill='url(%23g)'/%3E%3Cpath d='M58 136c8-16 22-25 38-25s30 9 38 25' stroke='url(%23g)' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
